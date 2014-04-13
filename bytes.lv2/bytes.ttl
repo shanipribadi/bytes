@@ -14,6 +14,10 @@
   doap:license <http://usefulinc.com/doap/licenses/gpl>;
   lv2:requiredFeature urid:map;
   
+  
+  # Input and output
+  # -----------------------------------------------------------------------
+  
   lv2:port [
     a atom:AtomPort, lv2:InputPort;
     lv2:index 0;
@@ -35,6 +39,10 @@
     lv2:symbol "rout";
     lv2:name "Right Out";
   ],
+  
+  
+  # Values
+  # -----------------------------------------------------------------------
   
   [
     a lv2:ControlPort, lv2:InputPort;
@@ -72,4 +80,42 @@
     lv2:maximum 255.0;
     lv2:default 15.0;
     lv2:portProperty lv2:integer;
+  ],
+  
+  
+  # Sync
+  # -----------------------------------------------------------------------
+  
+  [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 7;
+    lv2:symbol "byte1sync";
+    lv2:name "Byte 1 Sync";
+    lv2:minimum 1.0;
+    lv2:maximum 2.0;
+    lv2:default 1.0;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 8;
+    lv2:symbol "byte2sync";
+    lv2:name "Byte 2 Sync";
+    lv2:minimum 1.0;
+    lv2:maximum 2.0;
+    lv2:default 1.0;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 9;
+    lv2:symbol "byte3sync";
+    lv2:name "Byte 3 Sync";
+    lv2:minimum 1.0;
+    lv2:maximum 2.0;
+    lv2:default 1.0;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 10;
+    lv2:symbol "byte4sync";
+    lv2:name "Byte 4 Sync";
+    lv2:minimum 1.0;
+    lv2:maximum 2.0;
+    lv2:default 1.0;
   ].

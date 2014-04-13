@@ -15,6 +15,10 @@ typedef enum {
     BYTE2,
     BYTE3,
     BYTE4,
+    BYTE1SYNC,
+    BYTE2SYNC,
+    BYTE3SYNC,
+    BYTE4SYNC,
     NUM_PORTS
 } Bytes_PortIndex;
 
@@ -27,6 +31,10 @@ struct Bytes_ {
         const float* byte2;
         const float* byte3;
         const float* byte4;
+        const float* byte1sync;
+        const float* byte2sync;
+        const float* byte3sync;
+        const float* byte4sync;
     } ports;
     
     LV2_URID_Map* map;
@@ -36,6 +44,8 @@ struct Bytes_ {
     } uris;
     
     uint8_t bytes[4];
+    float sync[4];
+    
     Bytes_Voice voices[NVOICES];
     double rate;
 };

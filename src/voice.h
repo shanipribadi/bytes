@@ -10,12 +10,15 @@ typedef struct Bytes__Voice Bytes_Voice;
 
 struct Bytes__Voice {
     uint32_t phase;
+    uint32_t sync;
     
     double rate;
     
     uint8_t key;
     uint8_t velocity;
+    
     double hz;
+    float gain;
     
     Bytes_EG eg;
     

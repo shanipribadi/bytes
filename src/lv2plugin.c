@@ -38,6 +38,10 @@ static void connect_port (LV2_Handle instance, uint32_t port, void* data) {
         BYTES_CONNECT (BYTE2, byte2, const float*);
         BYTES_CONNECT (BYTE3, byte3, const float*);
         BYTES_CONNECT (BYTE4, byte4, const float*);
+        BYTES_CONNECT (BYTE1SYNC, byte1sync, const float*);
+        BYTES_CONNECT (BYTE2SYNC, byte2sync, const float*);
+        BYTES_CONNECT (BYTE3SYNC, byte3sync, const float*);
+        BYTES_CONNECT (BYTE4SYNC, byte4sync, const float*);
         default: break;
     }
 }
@@ -56,6 +60,11 @@ static void run (LV2_Handle instance, uint32_t nframes) {
     self->bytes[1] = (uint8_t) *(self->ports.byte2);
     self->bytes[2] = (uint8_t) *(self->ports.byte3);
     self->bytes[3] = (uint8_t) *(self->ports.byte4);
+    
+    self->sync[0] = *(self->ports.byte1sync);
+    self->sync[1] = *(self->ports.byte2sync);
+    self->sync[2] = *(self->ports.byte3sync);
+    self->sync[3] = *(self->ports.byte4sync);
     
     LV2_ATOM_SEQUENCE_FOREACH (self->ports.control, ev) {
         if (ev->body.type == self->uris.midi_MidiEvent) {
