@@ -1,0 +1,75 @@
+
+@prefix atom:   <http://lv2plug.in/ns/ext/atom#>.
+@prefix doap:   <http://usefulinc.com/ns/doap#>.
+@prefix lv2:    <http://lv2plug.in/ns/lv2core#>.
+@prefix midi:   <http://lv2plug.in/ns/ext/midi#>.
+@prefix pprops: <http://lv2plug.in/ns/ext/port-props#>.
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix urid:   <http://lv2plug.in/ns/ext/urid#>.
+
+<http://grejppi.github.io/plugins/bytes>
+  a lv2:Plugin, lv2:InstrumentPlugin;
+  doap:name "Bytes";
+  doap:license <http://usefulinc.com/doap/licenses/gpl>;
+  lv2:requiredFeature urid:map;
+  
+  lv2:port [
+    a atom:AtomPort, lv2:InputPort;
+    lv2:index 0;
+    lv2:symbol "control";
+    lv2:name "Control";
+    atom:bufferType atom:Sequence;
+    atom:supports midi:MidiEvent;
+    lv2:designation lv2:control;
+  ],
+  
+  [
+    a lv2:AudioPort, lv2:OutputPort;
+    lv2:index 1;
+    lv2:symbol "lout";
+    lv2:name "Left Out";
+  ], [
+    a lv2:AudioPort, lv2:OutputPort;
+    lv2:index 2;
+    lv2:symbol "rout";
+    lv2:name "Right Out";
+  ],
+  
+  [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 3;
+    lv2:symbol "byte1";
+    lv2:name "Byte 1";
+    lv2:minimum 0.0;
+    lv2:maximum 255.0;
+    lv2:default 15.0;
+    lv2:portProperty lv2:integer;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 4;
+    lv2:symbol "byte2";
+    lv2:name "Byte 2";
+    lv2:minimum 0.0;
+    lv2:maximum 255.0;
+    lv2:default 15.0;
+    lv2:portProperty lv2:integer;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 5;
+    lv2:symbol "byte3";
+    lv2:name "Byte 3";
+    lv2:minimum 0.0;
+    lv2:maximum 255.0;
+    lv2:default 15.0;
+    lv2:portProperty lv2:integer;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 6;
+    lv2:symbol "byte4";
+    lv2:name "Byte 4";
+    lv2:minimum 0.0;
+    lv2:maximum 255.0;
+    lv2:default 15.0;
+    lv2:portProperty lv2:integer;
+  ].
