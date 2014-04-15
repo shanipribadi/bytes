@@ -91,7 +91,7 @@
     lv2:index 7;
     lv2:symbol "byte1sync";
     lv2:name "Byte 1 Sync";
-    lv2:minimum 1.0;
+    lv2:minimum 0.5;
     lv2:maximum 8.0;
     lv2:default 1.0;
   ], [
@@ -99,7 +99,7 @@
     lv2:index 8;
     lv2:symbol "byte2sync";
     lv2:name "Byte 2 Sync";
-    lv2:minimum 1.0;
+    lv2:minimum 0.5;
     lv2:maximum 8.0;
     lv2:default 1.0;
   ], [
@@ -107,7 +107,7 @@
     lv2:index 9;
     lv2:symbol "byte3sync";
     lv2:name "Byte 3 Sync";
-    lv2:minimum 1.0;
+    lv2:minimum 0.5;
     lv2:maximum 8.0;
     lv2:default 1.0;
   ], [
@@ -115,7 +115,7 @@
     lv2:index 10;
     lv2:symbol "byte4sync";
     lv2:name "Byte 4 Sync";
-    lv2:minimum 1.0;
+    lv2:minimum 0.5;
     lv2:maximum 8.0;
     lv2:default 1.0;
   ],
@@ -129,7 +129,7 @@
     lv2:index 11;
     lv2:symbol "byte1mod";
     lv2:name "Byte 1 Mod";
-    lv2:minimum 1.0;
+    lv2:minimum 0.5;
     lv2:maximum 8.0;
     lv2:default 1.0;
   ], [
@@ -137,7 +137,7 @@
     lv2:index 12;
     lv2:symbol "byte2mod";
     lv2:name "Byte 2 Mod";
-    lv2:minimum 1.0;
+    lv2:minimum 0.5;
     lv2:maximum 8.0;
     lv2:default 1.0;
   ], [
@@ -145,7 +145,7 @@
     lv2:index 13;
     lv2:symbol "byte3mod";
     lv2:name "Byte 3 Mod";
-    lv2:minimum 1.0;
+    lv2:minimum 0.5;
     lv2:maximum 8.0;
     lv2:default 1.0;
   ], [
@@ -153,7 +153,7 @@
     lv2:index 14;
     lv2:symbol "byte4mod";
     lv2:name "Byte 4 Mod";
-    lv2:minimum 1.0;
+    lv2:minimum 0.5;
     lv2:maximum 8.0;
     lv2:default 1.0;
   ],
