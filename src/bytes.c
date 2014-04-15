@@ -80,7 +80,7 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
     static float pulse[2] = { -1, 1 };
     
     for (unsigned b = 0; b < 4; ++b) {
-        limits[b] = self->mod[b] > 0 ? (8 - self->sync[b]) : self->sync[b];
+        limits[b] = self->mod[b] - self->sync[b];
     }
     
     for (unsigned vi = 0; vi < NVOICES; ++vi) {
@@ -111,7 +111,7 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
                 for (unsigned o = 0; o < OVERSAMPLING; ++o) {
                     bytes_voice_next (v, v->hz);
                     for (unsigned b = 0; b < 4; ++b) {
-                        s += pulse[!!(self->bytes[b] & (1 << ((uint32_t) (v->phase * (self->sync[b] + (v->eg2.value * self->mod[b] * limits[b]))) >> 29)))] * self->gain[b];
+                        s += pulse[!!(self->bytes[b] & (1 << ((uint32_t) (v->phase * (self->sync[b] + (v->eg2.value * limits[b]))) >> 29)))] * self->gain[b];
                     }
                     s *= v->eg1.value;
                 }
