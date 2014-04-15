@@ -89,7 +89,7 @@
   [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 7;
-    lv2:symbol "byte1lsync";
+    lv2:symbol "lsync1";
     lv2:name "Byte 1 Sync (left)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
@@ -97,7 +97,7 @@
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 8;
-    lv2:symbol "byte2lsync";
+    lv2:symbol "lsync2";
     lv2:name "Byte 2 Sync (left)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
@@ -105,7 +105,7 @@
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 9;
-    lv2:symbol "byte3lsync";
+    lv2:symbol "lsync3";
     lv2:name "Byte 3 Sync (left)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
@@ -113,7 +113,7 @@
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 10;
-    lv2:symbol "byte4lsync";
+    lv2:symbol "lsync4";
     lv2:name "Byte 4 Sync (left)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
@@ -127,7 +127,7 @@
   [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 11;
-    lv2:symbol "byte1lmod";
+    lv2:symbol "lmod1";
     lv2:name "Byte 1 Mod (left)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
@@ -135,7 +135,7 @@
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 12;
-    lv2:symbol "byte2lmod";
+    lv2:symbol "lmod2";
     lv2:name "Byte 2 Mod (left)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
@@ -143,7 +143,7 @@
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 13;
-    lv2:symbol "byte3lmod";
+    lv2:symbol "lmod3";
     lv2:name "Byte 3 Mod (left)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
@@ -151,7 +151,7 @@
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 14;
-    lv2:symbol "byte4lmod";
+    lv2:symbol "lmod4";
     lv2:name "Byte 4 Mod (left)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
@@ -165,7 +165,7 @@
   [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 15;
-    lv2:symbol "byte1rsync";
+    lv2:symbol "rsync1";
     lv2:name "Byte 1 Sync (right)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
@@ -173,7 +173,7 @@
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 16;
-    lv2:symbol "byte2rsync";
+    lv2:symbol "rsync2";
     lv2:name "Byte 2 Sync (right)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
@@ -181,7 +181,7 @@
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 17;
-    lv2:symbol "byte3rsync";
+    lv2:symbol "rsync3";
     lv2:name "Byte 3 Sync (right)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
@@ -189,7 +189,7 @@
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 18;
-    lv2:symbol "byte4rsync";
+    lv2:symbol "rsync4";
     lv2:name "Byte 4 Sync (right)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
@@ -203,7 +203,7 @@
   [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 19;
-    lv2:symbol "byte1rmod";
+    lv2:symbol "rmod1";
     lv2:name "Byte 1 Mod (right)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
@@ -211,7 +211,7 @@
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 20;
-    lv2:symbol "byte2rmod";
+    lv2:symbol "rmod2";
     lv2:name "Byte 2 Mod (right)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
@@ -219,7 +219,7 @@
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 21;
-    lv2:symbol "byte3rmod";
+    lv2:symbol "rmod3";
     lv2:name "Byte 3 Mod (right)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
@@ -227,7 +227,7 @@
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 22;
-    lv2:symbol "byte4rmod";
+    lv2:symbol "rmod4";
     lv2:name "Byte 4 Mod (right)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
@@ -241,7 +241,7 @@
   [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 23;
-    lv2:symbol "byte1gain";
+    lv2:symbol "gain1";
     lv2:name "Byte 1 Gain";
     lv2:minimum 0.0;
     lv2:maximum 1.0;
@@ -249,7 +249,7 @@
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 24;
-    lv2:symbol "byte2gain";
+    lv2:symbol "gain2";
     lv2:name "Byte 2 Gain";
     lv2:minimum 0.0;
     lv2:maximum 1.0;
@@ -257,7 +257,7 @@
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 25;
-    lv2:symbol "byte3gain";
+    lv2:symbol "gain3";
     lv2:name "Byte 3 Gain";
     lv2:minimum 0.0;
     lv2:maximum 1.0;
@@ -265,7 +265,7 @@
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 26;
-    lv2:symbol "byte4gain";
+    lv2:symbol "gain4";
     lv2:name "Byte 4 Gain";
     lv2:minimum 0.0;
     lv2:maximum 1.0;
