@@ -38,10 +38,26 @@ static void connect_port (LV2_Handle instance, uint32_t port, void* data) {
         BYTES_CONNECT (BYTE2, byte2, const float*);
         BYTES_CONNECT (BYTE3, byte3, const float*);
         BYTES_CONNECT (BYTE4, byte4, const float*);
-        BYTES_CONNECT (BYTE1SYNC, byte1sync, const float*);
-        BYTES_CONNECT (BYTE2SYNC, byte2sync, const float*);
-        BYTES_CONNECT (BYTE3SYNC, byte3sync, const float*);
-        BYTES_CONNECT (BYTE4SYNC, byte4sync, const float*);
+        BYTES_CONNECT (BYTE1_SYNC, byte1_sync, const float*);
+        BYTES_CONNECT (BYTE2_SYNC, byte2_sync, const float*);
+        BYTES_CONNECT (BYTE3_SYNC, byte3_sync, const float*);
+        BYTES_CONNECT (BYTE4_SYNC, byte4_sync, const float*);
+        BYTES_CONNECT (BYTE1_MOD, byte1_mod, const float*);
+        BYTES_CONNECT (BYTE2_MOD, byte2_mod, const float*);
+        BYTES_CONNECT (BYTE3_MOD, byte3_mod, const float*);
+        BYTES_CONNECT (BYTE4_MOD, byte4_mod, const float*);
+        BYTES_CONNECT (BYTE1_GAIN, byte1_gain, const float*);
+        BYTES_CONNECT (BYTE2_GAIN, byte2_gain, const float*);
+        BYTES_CONNECT (BYTE3_GAIN, byte3_gain, const float*);
+        BYTES_CONNECT (BYTE4_GAIN, byte4_gain, const float*);
+        BYTES_CONNECT (EG1_ATTACK, eg1_attack, const float*);
+        BYTES_CONNECT (EG1_DECAY, eg1_decay, const float*);
+        BYTES_CONNECT (EG1_SUSTAIN, eg1_sustain, const float*);
+        BYTES_CONNECT (EG1_RELEASE, eg1_release, const float*);
+        BYTES_CONNECT (EG2_ATTACK, eg2_attack, const float*);
+        BYTES_CONNECT (EG2_DECAY, eg2_decay, const float*);
+        BYTES_CONNECT (EG2_SUSTAIN, eg2_sustain, const float*);
+        BYTES_CONNECT (EG2_RELEASE, eg2_release, const float*);
         default: break;
     }
 }
@@ -61,10 +77,20 @@ static void run (LV2_Handle instance, uint32_t nframes) {
     self->bytes[2] = (uint8_t) *(self->ports.byte3);
     self->bytes[3] = (uint8_t) *(self->ports.byte4);
     
-    self->sync[0] = *(self->ports.byte1sync);
-    self->sync[1] = *(self->ports.byte2sync);
-    self->sync[2] = *(self->ports.byte3sync);
-    self->sync[3] = *(self->ports.byte4sync);
+    self->sync[0] = *(self->ports.byte1_sync);
+    self->sync[1] = *(self->ports.byte2_sync);
+    self->sync[2] = *(self->ports.byte3_sync);
+    self->sync[3] = *(self->ports.byte4_sync);
+    
+    self->mod[0] = *(self->ports.byte1_mod);
+    self->mod[1] = *(self->ports.byte2_mod);
+    self->mod[2] = *(self->ports.byte3_mod);
+    self->mod[3] = *(self->ports.byte4_mod);
+    
+    self->gain[0] = *(self->ports.byte1_gain);
+    self->gain[1] = *(self->ports.byte2_gain);
+    self->gain[2] = *(self->ports.byte3_gain);
+    self->gain[3] = *(self->ports.byte4_gain);
     
     LV2_ATOM_SEQUENCE_FOREACH (self->ports.control, ev) {
         if (ev->body.type == self->uris.midi_MidiEvent) {

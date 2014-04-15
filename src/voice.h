@@ -20,7 +20,8 @@ struct Bytes__Voice {
     double hz;
     float gain;
     
-    Bytes_EG eg;
+    Bytes_EG eg1;
+    Bytes_EG eg2;
     
     uint32_t counter;
 };

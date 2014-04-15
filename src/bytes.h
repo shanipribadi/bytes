@@ -11,14 +11,37 @@ typedef enum {
     CONTROL,
     LOUT,
     ROUT,
+    
     BYTE1,
     BYTE2,
     BYTE3,
     BYTE4,
-    BYTE1SYNC,
-    BYTE2SYNC,
-    BYTE3SYNC,
-    BYTE4SYNC,
+    
+    BYTE1_SYNC,
+    BYTE2_SYNC,
+    BYTE3_SYNC,
+    BYTE4_SYNC,
+    
+    BYTE1_MOD,
+    BYTE2_MOD,
+    BYTE3_MOD,
+    BYTE4_MOD,
+    
+    BYTE1_GAIN,
+    BYTE2_GAIN,
+    BYTE3_GAIN,
+    BYTE4_GAIN,
+    
+    EG1_ATTACK,
+    EG1_DECAY,
+    EG1_SUSTAIN,
+    EG1_RELEASE,
+    
+    EG2_ATTACK,
+    EG2_DECAY,
+    EG2_SUSTAIN,
+    EG2_RELEASE,
+    
     NUM_PORTS
 } Bytes_PortIndex;
 
@@ -31,10 +54,26 @@ struct Bytes_ {
         const float* byte2;
         const float* byte3;
         const float* byte4;
-        const float* byte1sync;
-        const float* byte2sync;
-        const float* byte3sync;
-        const float* byte4sync;
+        const float* byte1_sync;
+        const float* byte2_sync;
+        const float* byte3_sync;
+        const float* byte4_sync;
+        const float* byte1_mod;
+        const float* byte2_mod;
+        const float* byte3_mod;
+        const float* byte4_mod;
+        const float* byte1_gain;
+        const float* byte2_gain;
+        const float* byte3_gain;
+        const float* byte4_gain;
+        const float* eg1_attack;
+        const float* eg1_decay;
+        const float* eg1_sustain;
+        const float* eg1_release;
+        const float* eg2_attack;
+        const float* eg2_decay;
+        const float* eg2_sustain;
+        const float* eg2_release;
     } ports;
     
     LV2_URID_Map* map;
@@ -45,6 +84,8 @@ struct Bytes_ {
     
     uint8_t bytes[4];
     float sync[4];
+    float mod[4];
+    float gain[4];
     
     Bytes_Voice voices[NVOICES];
     double rate;
