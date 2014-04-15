@@ -17,20 +17,30 @@ typedef enum {
     BYTE3,
     BYTE4,
     
-    BYTE1_SYNC,
-    BYTE2_SYNC,
-    BYTE3_SYNC,
-    BYTE4_SYNC,
+    LSYNC1,
+    LSYNC2,
+    LSYNC3,
+    LSYNC4,
     
-    BYTE1_MOD,
-    BYTE2_MOD,
-    BYTE3_MOD,
-    BYTE4_MOD,
+    LMOD1,
+    LMOD2,
+    LMOD3,
+    LMOD4,
     
-    BYTE1_GAIN,
-    BYTE2_GAIN,
-    BYTE3_GAIN,
-    BYTE4_GAIN,
+    RSYNC1,
+    RSYNC2,
+    RSYNC3,
+    RSYNC4,
+    
+    RMOD1,
+    RMOD2,
+    RMOD3,
+    RMOD4,
+    
+    GAIN1,
+    GAIN2,
+    GAIN3,
+    GAIN4,
     
     EG1_ATTACK,
     EG1_DECAY,
@@ -54,18 +64,26 @@ struct Bytes_ {
         const float* byte2;
         const float* byte3;
         const float* byte4;
-        const float* byte1_sync;
-        const float* byte2_sync;
-        const float* byte3_sync;
-        const float* byte4_sync;
-        const float* byte1_mod;
-        const float* byte2_mod;
-        const float* byte3_mod;
-        const float* byte4_mod;
-        const float* byte1_gain;
-        const float* byte2_gain;
-        const float* byte3_gain;
-        const float* byte4_gain;
+        const float* lsync1;
+        const float* lsync2;
+        const float* lsync3;
+        const float* lsync4;
+        const float* lmod1;
+        const float* lmod2;
+        const float* lmod3;
+        const float* lmod4;
+        const float* rsync1;
+        const float* rsync2;
+        const float* rsync3;
+        const float* rsync4;
+        const float* rmod1;
+        const float* rmod2;
+        const float* rmod3;
+        const float* rmod4;
+        const float* gain1;
+        const float* gain2;
+        const float* gain3;
+        const float* gain4;
         const float* eg1_attack;
         const float* eg1_decay;
         const float* eg1_sustain;
@@ -83,8 +101,12 @@ struct Bytes_ {
     } uris;
     
     uint8_t bytes[4];
-    float sync[4];
-    float mod[4];
+    
+    float lsync[4];
+    float rsync[4];
+    float lmod[4];
+    float rmod[4];
+    
     float gain[4];
     
     Bytes_Voice voices[NVOICES];

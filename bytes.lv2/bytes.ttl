@@ -83,76 +83,152 @@
   ],
   
   
-  # Sync
+  # Sync (left)
   # -----------------------------------------------------------------------
   
   [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 7;
-    lv2:symbol "byte1sync";
-    lv2:name "Byte 1 Sync";
+    lv2:symbol "byte1lsync";
+    lv2:name "Byte 1 Sync (left)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
     lv2:default 1.0;
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 8;
-    lv2:symbol "byte2sync";
-    lv2:name "Byte 2 Sync";
+    lv2:symbol "byte2lsync";
+    lv2:name "Byte 2 Sync (left)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
     lv2:default 1.0;
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 9;
-    lv2:symbol "byte3sync";
-    lv2:name "Byte 3 Sync";
+    lv2:symbol "byte3lsync";
+    lv2:name "Byte 3 Sync (left)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
     lv2:default 1.0;
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 10;
-    lv2:symbol "byte4sync";
-    lv2:name "Byte 4 Sync";
+    lv2:symbol "byte4lsync";
+    lv2:name "Byte 4 Sync (left)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
     lv2:default 1.0;
   ],
   
   
-  # Envelope modulation of sync
+  # Envelope modulation of sync (left)
   # -----------------------------------------------------------------------
   
   [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 11;
-    lv2:symbol "byte1mod";
-    lv2:name "Byte 1 Mod";
+    lv2:symbol "byte1lmod";
+    lv2:name "Byte 1 Mod (left)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
     lv2:default 1.0;
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 12;
-    lv2:symbol "byte2mod";
-    lv2:name "Byte 2 Mod";
+    lv2:symbol "byte2lmod";
+    lv2:name "Byte 2 Mod (left)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
     lv2:default 1.0;
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 13;
-    lv2:symbol "byte3mod";
-    lv2:name "Byte 3 Mod";
+    lv2:symbol "byte3lmod";
+    lv2:name "Byte 3 Mod (left)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
     lv2:default 1.0;
   ], [
     a lv2:ControlPort, lv2:InputPort;
     lv2:index 14;
-    lv2:symbol "byte4mod";
-    lv2:name "Byte 4 Mod";
+    lv2:symbol "byte4lmod";
+    lv2:name "Byte 4 Mod (left)";
+    lv2:minimum 0.5;
+    lv2:maximum 8.0;
+    lv2:default 1.0;
+  ],
+  
+  
+  # Sync (right)
+  # -----------------------------------------------------------------------
+  
+  [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 15;
+    lv2:symbol "byte1rsync";
+    lv2:name "Byte 1 Sync (right)";
+    lv2:minimum 0.5;
+    lv2:maximum 8.0;
+    lv2:default 1.0;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 16;
+    lv2:symbol "byte2rsync";
+    lv2:name "Byte 2 Sync (right)";
+    lv2:minimum 0.5;
+    lv2:maximum 8.0;
+    lv2:default 1.0;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 17;
+    lv2:symbol "byte3rsync";
+    lv2:name "Byte 3 Sync (right)";
+    lv2:minimum 0.5;
+    lv2:maximum 8.0;
+    lv2:default 1.0;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 18;
+    lv2:symbol "byte4rsync";
+    lv2:name "Byte 4 Sync (right)";
+    lv2:minimum 0.5;
+    lv2:maximum 8.0;
+    lv2:default 1.0;
+  ],
+  
+  
+  # Envelope modulation of sync (right)
+  # -----------------------------------------------------------------------
+  
+  [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 19;
+    lv2:symbol "byte1rmod";
+    lv2:name "Byte 1 Mod (right)";
+    lv2:minimum 0.5;
+    lv2:maximum 8.0;
+    lv2:default 1.0;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 20;
+    lv2:symbol "byte2rmod";
+    lv2:name "Byte 2 Mod (right)";
+    lv2:minimum 0.5;
+    lv2:maximum 8.0;
+    lv2:default 1.0;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 21;
+    lv2:symbol "byte3rmod";
+    lv2:name "Byte 3 Mod (right)";
+    lv2:minimum 0.5;
+    lv2:maximum 8.0;
+    lv2:default 1.0;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 22;
+    lv2:symbol "byte4rmod";
+    lv2:name "Byte 4 Mod (right)";
     lv2:minimum 0.5;
     lv2:maximum 8.0;
     lv2:default 1.0;
@@ -164,7 +240,7 @@
   
   [
     a lv2:ControlPort, lv2:InputPort;
-    lv2:index 15;
+    lv2:index 23;
     lv2:symbol "byte1gain";
     lv2:name "Byte 1 Gain";
     lv2:minimum 0.0;
@@ -172,7 +248,7 @@
     lv2:default 1.0;
   ], [
     a lv2:ControlPort, lv2:InputPort;
-    lv2:index 16;
+    lv2:index 24;
     lv2:symbol "byte2gain";
     lv2:name "Byte 2 Gain";
     lv2:minimum 0.0;
@@ -180,7 +256,7 @@
     lv2:default 1.0;
   ], [
     a lv2:ControlPort, lv2:InputPort;
-    lv2:index 17;
+    lv2:index 25;
     lv2:symbol "byte3gain";
     lv2:name "Byte 3 Gain";
     lv2:minimum 0.0;
@@ -188,7 +264,7 @@
     lv2:default 1.0;
   ], [
     a lv2:ControlPort, lv2:InputPort;
-    lv2:index 18;
+    lv2:index 26;
     lv2:symbol "byte4gain";
     lv2:name "Byte 4 Gain";
     lv2:minimum 0.0;
@@ -202,7 +278,7 @@
   
   [
     a lv2:ControlPort, lv2:InputPort;
-    lv2:index 19;
+    lv2:index 27;
     lv2:symbol "eg1attack";
     lv2:name "EG 1 Attack";
     lv2:minimum 0.0;
@@ -210,7 +286,7 @@
     lv2:default 0.0;
   ], [
     a lv2:ControlPort, lv2:InputPort;
-    lv2:index 20;
+    lv2:index 28;
     lv2:symbol "eg1decay";
     lv2:name "EG 1 Decay";
     lv2:minimum 0.0;
@@ -218,7 +294,7 @@
     lv2:default 1.0;
   ], [
     a lv2:ControlPort, lv2:InputPort;
-    lv2:index 21;
+    lv2:index 29;
     lv2:symbol "eg1sustain";
     lv2:name "EG 1 Sustain";
     lv2:minimum 0.0;
@@ -226,7 +302,7 @@
     lv2:default 1.0;
   ], [
     a lv2:ControlPort, lv2:InputPort;
-    lv2:index 22;
+    lv2:index 30;
     lv2:symbol "eg1release";
     lv2:name "EG 1 Release";
     lv2:minimum 0.0;
@@ -240,7 +316,7 @@
   
   [
     a lv2:ControlPort, lv2:InputPort;
-    lv2:index 23;
+    lv2:index 31;
     lv2:symbol "eg2attack";
     lv2:name "EG 2 Attack";
     lv2:minimum 0.0;
@@ -248,7 +324,7 @@
     lv2:default 0.0;
   ], [
     a lv2:ControlPort, lv2:InputPort;
-    lv2:index 24;
+    lv2:index 32;
     lv2:symbol "eg2decay";
     lv2:name "EG 2 Decay";
     lv2:minimum 0.0;
@@ -256,7 +332,7 @@
     lv2:default 1.0;
   ], [
     a lv2:ControlPort, lv2:InputPort;
-    lv2:index 25;
+    lv2:index 33;
     lv2:symbol "eg2sustain";
     lv2:name "EG 2 Sustain";
     lv2:minimum 0.0;
@@ -264,7 +340,7 @@
     lv2:default 0.0;
   ], [
     a lv2:ControlPort, lv2:InputPort;
-    lv2:index 26;
+    lv2:index 34;
     lv2:symbol "eg2release";
     lv2:name "EG 2 Release";
     lv2:minimum 0.0;

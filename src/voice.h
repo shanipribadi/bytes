@@ -10,7 +10,6 @@ typedef struct Bytes__Voice Bytes_Voice;
 
 struct Bytes__Voice {
     uint32_t phase;
-    uint32_t sync;
     
     double rate;
     

@@ -75,12 +75,14 @@ void bytes_note_off (Bytes* self, uint8_t key, uint8_t velocity) {
 void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
     Bytes_Voice* v;
     
-    float limits[4];
+    float llimits[4];
+    float rlimits[4];
     
     static float pulse[2] = { -1, 1 };
     
     for (unsigned b = 0; b < 4; ++b) {
-        limits[b] = self->mod[b] - self->sync[b];
+        llimits[b] = self->lmod[b] - self->lsync[b];
+        rlimits[b] = self->rmod[b] - self->rsync[b];
     }
     
     for (unsigned vi = 0; vi < NVOICES; ++vi) {
@@ -103,7 +105,8 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
             ++v->counter;
             
             for (uint32_t i = start; i < end; ++i) {
-                float s = 0;
+                float l = 0;
+                float r = 0;
                 
                 bytes_eg_next (&v->eg1);
                 bytes_eg_next (&v->eg2);
@@ -111,14 +114,17 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
                 for (unsigned o = 0; o < OVERSAMPLING; ++o) {
                     bytes_voice_next (v, v->hz);
                     for (unsigned b = 0; b < 4; ++b) {
-                        s += pulse[!!(self->bytes[b] & (1 << ((uint32_t) (v->phase * (self->sync[b] + (v->eg2.value * limits[b]))) >> 29)))] * self->gain[b];
+                        l += pulse[!!(self->bytes[b] & (1 << ((uint32_t) (v->phase * (self->lsync[b] + (v->eg2.value * llimits[b]))) >> 29)))] * self->gain[b];
+                        r += pulse[!!(self->bytes[b] & (1 << ((uint32_t) (v->phase * (self->rsync[b] + (v->eg2.value * rlimits[b]))) >> 29)))] * self->gain[b];
                     }
-                    s *= v->eg1.value;
+                    l *= v->eg1.value;
+                    r *= v->eg1.value;
                 }
                 
-                s /= (float) (NVOICES * OVERSAMPLING);
-                self->ports.lout[i] += s;
-                self->ports.rout[i] += s;
+                l /= (float) (NVOICES * OVERSAMPLING);
+                r /= (float) (NVOICES * OVERSAMPLING);
+                self->ports.lout[i] += l;
+                self->ports.rout[i] += r;
             }
         }
     }
