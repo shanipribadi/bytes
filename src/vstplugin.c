@@ -137,12 +137,36 @@ static const LV2_Feature* features[4] = {
 
 static intptr_t dispatcher (AEffect* aeffect, int opcode, int index, intptr_t integer, void* data, float flt) {
     BytesVST* vst = (BytesVST*) aeffect->ptr3;
-    Bytes* self = (Bytes*) vst->handle;
     
     VstEvents* events;
     uint8_t msg[3];
     
+    if (!aeffect->ptr3 && opcode > effClose) {
+        return 0;
+    }
+    
     switch ((const int) opcode) {
+    case effOpen:
+        vst = malloc (sizeof (BytesVST));
+        
+        vst->descriptor = (LV2_Descriptor*) lv2_descriptor (0);
+        vst->evbuf = lv2_evbuf_new (1024, LV2_EVBUF_ATOM, atom_Chunk, atom_Sequence);
+        lv2_evbuf_reset (vst->evbuf, true);
+        
+        vst->handle = vst->descriptor->instantiate (vst->descriptor, 48000, NULL, features);
+        
+        for (uint32_t i = 0; i < NUM_PORTS - PARAMOFFSET; ++i) {
+            vst->ports[i][0] = ranges[i].def;
+        }
+        
+        aeffect->ptr3 = vst;
+        break;
+    
+    case effClose:
+        vst->descriptor->cleanup (vst->handle);
+        free (vst);
+        break;
+    
     case effProcessEvents:
         events = (VstEvents*) data;
         if (!events) {
@@ -168,7 +192,7 @@ static intptr_t dispatcher (AEffect* aeffect, int opcode, int index, intptr_t in
         break;
     
     case effSetSampleRate:
-        self->rate = (double) flt;
+        ((Bytes*) vst->handle)->rate = (double) flt;
         break;
     
     case effGetParamName:
@@ -193,9 +217,6 @@ static intptr_t dispatcher (AEffect* aeffect, int opcode, int index, intptr_t in
         }
         break;
     
-    case effOpen:
-        break;
-    
     case effCanDo:
         if (!strcmp ((const char*) data, "receiveVstEvents")) {
             return 1;
@@ -213,16 +234,22 @@ static intptr_t dispatcher (AEffect* aeffect, int opcode, int index, intptr_t in
 
 static void setParameter (AEffect* aeffect, int index, float value) {
     BytesVST* vst = (BytesVST*) aeffect->ptr3;
-    vst->ports[index][0] = value_to_lv2 (value, index);
+    if (vst) {
+        vst->ports[index][0] = value_to_lv2 (value, index);
+    }
 }
 
 static float getParameter (AEffect* aeffect, int index) {
     BytesVST* vst = (BytesVST*) aeffect->ptr3;
-    return value_to_vst (vst->ports[index][0], index);
+    return value_to_vst (vst ? vst->ports[index][0] : ranges[index].def, index);
 }
 
 static void processReplacing (AEffect* aeffect, float** inputs, float** outputs, int nframes) {
     BytesVST* vst = (BytesVST*) aeffect->ptr3;
+    
+    if (!vst) {
+        return;
+    }
     
     for (uint32_t i = 0; i < NUM_PORTS; ++i) {
         switch (i) {
@@ -247,17 +274,6 @@ static void processReplacing (AEffect* aeffect, float** inputs, float** outputs,
 
 LV2_SYMBOL_EXPORT const AEffect* VSTPluginMain (audioMasterCallback master) {
     AEffect* self = malloc (sizeof (AEffect));
-    BytesVST* vst = malloc (sizeof (BytesVST));
-    
-    vst->descriptor = (LV2_Descriptor*) lv2_descriptor (0);
-    vst->evbuf = lv2_evbuf_new (1024, LV2_EVBUF_ATOM, atom_Chunk, atom_Sequence);
-    lv2_evbuf_reset (vst->evbuf, true);
-    
-    vst->handle = vst->descriptor->instantiate (vst->descriptor, 48000, NULL, features);
-    
-    for (uint32_t i = 0; i < NUM_PORTS - PARAMOFFSET; ++i) {
-        vst->ports[i][0] = ranges[i].def;
-    }
     
     self->magic = kEffectMagic;
     self->dispatcher = dispatcher;
@@ -271,7 +287,7 @@ LV2_SYMBOL_EXPORT const AEffect* VSTPluginMain (audioMasterCallback master) {
     self->flags = effFlagsCanReplacing | effFlagsIsSynth;
     self->ptr1 = NULL;
     self->ptr2 = NULL;
-    self->ptr3 = vst;
+    self->ptr3 = NULL;
     self->user = NULL;
     self->uniqueID = 0xf008a9ed;
     self->processReplacing = processReplacing;
