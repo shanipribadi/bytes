@@ -4,8 +4,6 @@ flags = -std=c99 -Wall `pkg-config lv2 --cflags` -shared -fPIC -DPIC -g
 sources = src/voice.c src/eg.c src/bytes.c src/lv2plugin.c
 vstsources = $(sources) src/vst/lv2_evbuf.c src/vstplugin.c
 
-all: lv2 vst
-
 lv2:
 	mkdir -p build/bytes.lv2
 	$(cc) -Werror $(flags) $(sources) -o build/bytes.lv2/bytes.so
