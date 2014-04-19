@@ -141,10 +141,6 @@ static intptr_t dispatcher (AEffect* aeffect, int opcode, int index, intptr_t in
     VstEvents* events;
     uint8_t msg[3];
     
-    if (!aeffect->ptr3 && opcode > effClose) {
-        return 0;
-    }
-    
     switch ((const int) opcode) {
     case effOpen:
         vst = malloc (sizeof (BytesVST));
@@ -168,6 +164,10 @@ static intptr_t dispatcher (AEffect* aeffect, int opcode, int index, intptr_t in
         break;
     
     case effProcessEvents:
+        if (!aeffect->ptr3) {
+            break;
+        }
+        
         events = (VstEvents*) data;
         if (!events) {
             break;
@@ -192,8 +192,16 @@ static intptr_t dispatcher (AEffect* aeffect, int opcode, int index, intptr_t in
         break;
     
     case effSetSampleRate:
+        if (!aeffect->ptr3) {
+            break;
+        }
+        
         ((Bytes*) vst->handle)->rate = (double) flt;
         break;
+    
+    case effGetEffectName:
+        strncpy (data, "Bytes", 8);
+        return 1;
     
     case effGetParamName:
         if (data) {
@@ -203,6 +211,10 @@ static intptr_t dispatcher (AEffect* aeffect, int opcode, int index, intptr_t in
         break;
     
     case effMainsChanged:
+        if (!aeffect->ptr3) {
+            break;
+        }
+        
         switch (integer) {
         case 1:
             vst->descriptor->activate (vst->handle);
