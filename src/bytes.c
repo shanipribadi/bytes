@@ -99,8 +99,6 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
     float llimits[4];
     float rlimits[4];
     
-    static float pulse[2] = { -1, 1 };
-    
     for (unsigned b = 0; b < 4; ++b) {
         llimits[b] = self->lmod[b] - self->lsync[b];
         rlimits[b] = self->rmod[b] - self->rsync[b];
@@ -121,7 +119,7 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
             *(self->ports.eg2_sustain),
             *(self->ports.eg2_release));
         
-        if (v->eg1.alive) {
+        if (v->eg1.alive || v->eg2.alive) {
             bytes_voice_init (v, self->rate);
             ++v->counter;
             
@@ -135,17 +133,25 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
                 for (unsigned o = 0; o < OVERSAMPLING; ++o) {
                     bytes_voice_next (v, v->hz);
                     for (unsigned b = 0; b < 4; ++b) {
-                        l += pulse[!!(self->bytes[b] & (1 << ((uint32_t) (v->phase * (self->lsync[b] + (v->eg2.value * llimits[b]))) >> 29)))] * self->gain[b];
-                        r += pulse[!!(self->bytes[b] & (1 << ((uint32_t) (v->phase * (self->rsync[b] + (v->eg2.value * rlimits[b]))) >> 29)))] * self->gain[b];
+                        l += !!(self->bytes[b] & (1 << ((uint32_t) (v->phase * (self->lsync[b] + (v->eg2.value * llimits[b]))) >> 29))) * self->gain[b];
+                        r += !!(self->bytes[b] & (1 << ((uint32_t) (v->phase * (self->rsync[b] + (v->eg2.value * rlimits[b]))) >> 29))) * self->gain[b];
                     }
-                    l *= v->eg1.value;
-                    r *= v->eg1.value;
                 }
+                
+                l *= v->eg1.value;
+                r *= v->eg1.value;
                 
                 l /= (float) (NVOICES * OVERSAMPLING);
                 r /= (float) (NVOICES * OVERSAMPLING);
-                self->ports.lout[i] += l;
-                self->ports.rout[i] += r;
+                
+                v->dc_lout = 0.995f * v->dc_lout + l - v->dc_lin;
+                v->dc_rout = 0.995f * v->dc_rout + r - v->dc_rin;
+                
+                v->dc_lin = l;
+                v->dc_rin = r;
+                
+                self->ports.lout[i] += v->dc_lout;
+                self->ports.rout[i] += v->dc_rout;
             }
         }
     }

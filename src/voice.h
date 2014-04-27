@@ -44,6 +44,11 @@ struct Bytes__Voice {
     Bytes_EG eg2;
     
     uint32_t counter;
+    
+    float dc_lin;
+    float dc_rin;
+    float dc_lout;
+    float dc_rout;
 };
 
 void bytes_voice_init (Bytes_Voice* self, double rate);
