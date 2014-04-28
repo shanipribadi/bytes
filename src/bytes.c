@@ -141,8 +141,8 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
                 l *= v->eg1.value;
                 r *= v->eg1.value;
                 
-                l /= (float) (NVOICES * OVERSAMPLING);
-                r /= (float) (NVOICES * OVERSAMPLING);
+                l /= (float) ((NVOICES >> 1) * OVERSAMPLING);
+                r /= (float) ((NVOICES >> 1) * OVERSAMPLING);
                 
                 v->dc_lout = 0.995f * v->dc_lout + l - v->dc_lin;
                 v->dc_rout = 0.995f * v->dc_rout + r - v->dc_rin;
