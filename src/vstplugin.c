@@ -95,30 +95,30 @@ static inline float value_to_vst (float lv2value, uint32_t index) {
 }
 
 enum {
-    midi_MidiEvent,
+    midi_MidiEvent = 1,
     atom_Chunk,
     atom_Sequence,
     NUM_URIS
 };
 
-static const char* uris[NUM_URIS] = {
+static const char* uris[NUM_URIS - 1] = {
     LV2_MIDI__MidiEvent,
     LV2_ATOM__Chunk,
     LV2_ATOM__Sequence
 };
 
 static LV2_URID map_uri (LV2_URID_Map_Handle handle, const char* uri) {
-    for (uint32_t i = 0; i < NUM_URIS; ++i) {
+    for (uint32_t i = 0; i < (NUM_URIS - 1); ++i) {
         if (!strcmp (uri, uris[i])) {
-            return i;
+            return i + 1;
         }
     }
-    return NUM_URIS;
+    return 0;
 }
 
 static const char* unmap_uri (LV2_URID_Unmap_Handle handle, LV2_URID urid) {
-    if (urid < NUM_URIS) {
-        return uris[urid];
+    if (urid && urid < NUM_URIS) {
+        return uris[urid - 1];
     }
     return NULL;
 }
