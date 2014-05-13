@@ -25,7 +25,7 @@
 #include "bytes.h"
 
 Bytes* bytes_new (double rate) {
-    Bytes* self = malloc (sizeof (Bytes));
+    Bytes* self = calloc (1, sizeof (Bytes));
     
     for (unsigned i = 0; i < NVOICES; ++i) {
         bytes_voice_init (&self->voices[i], rate);
