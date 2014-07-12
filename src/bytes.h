@@ -29,6 +29,15 @@
 typedef struct Bytes_ Bytes;
 
 typedef enum {
+    MOD_MANUAL,
+    MOD_ENVELOPE,
+    
+    /* TODO: */
+    MOD_LFO,
+    MOD_LFO_BY_ENVELOPE
+} Bytes_ModulationMethod;
+
+typedef enum {
     CONTROL,
     LOUT,
     ROUT,
@@ -73,6 +82,9 @@ typedef enum {
     EG2_SUSTAIN,
     EG2_RELEASE,
     
+    MOD_METHOD,
+    MODULATION,
+    
     NUM_PORTS
 } Bytes_PortIndex;
 
@@ -113,6 +125,8 @@ struct Bytes_ {
         const float* eg2_decay;
         const float* eg2_sustain;
         const float* eg2_release;
+        const float* mod_method;
+        const float* modulation;
     } ports;
     
     LV2_URID_Map* map;
@@ -129,6 +143,8 @@ struct Bytes_ {
     float rmod[4];
     
     float gain[4];
+    
+    Bytes_ModulationMethod method;
     
     Bytes_Voice voices[NVOICES];
     double rate;

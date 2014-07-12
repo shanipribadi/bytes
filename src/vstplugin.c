@@ -83,7 +83,10 @@ static const BytesVST_Port ranges[NUM_PORTS - PARAMOFFSET] = {
     { "atk2", 0, 1, 0 },
     { "dec2", 0, 1, 1 },
     { "sus2", 0, 1, 0 },
-    { "rel2", 0, 1, 0 }
+    { "rel2", 0, 1, 0 },
+    
+    { "method", 0, 1, 1 },
+    { "modulat", 0, 1, 0 },
 };
 
 static inline float value_to_lv2 (float vstvalue, uint32_t index) {
@@ -136,7 +139,7 @@ static const LV2_Feature* features[4] = {
 };
 
 static intptr_t dispatcher (AEffect* aeffect, int opcode, int index, intptr_t integer, void* data, float flt) {
-    BytesVST* vst = (BytesVST*) aeffect->ptr3;
+    BytesVST* vst = aeffect->ptr3;
     
     VstEvents* events;
     uint8_t msg[3];
@@ -168,7 +171,7 @@ static intptr_t dispatcher (AEffect* aeffect, int opcode, int index, intptr_t in
             break;
         }
         
-        events = (VstEvents*) data;
+        events = data;
         if (!events) {
             break;
         }
@@ -245,19 +248,19 @@ static intptr_t dispatcher (AEffect* aeffect, int opcode, int index, intptr_t in
 }
 
 static void setParameter (AEffect* aeffect, int index, float value) {
-    BytesVST* vst = (BytesVST*) aeffect->ptr3;
+    BytesVST* vst = aeffect->ptr3;
     if (vst) {
         vst->ports[index][0] = value_to_lv2 (value, index);
     }
 }
 
 static float getParameter (AEffect* aeffect, int index) {
-    BytesVST* vst = (BytesVST*) aeffect->ptr3;
+    BytesVST* vst = aeffect->ptr3;
     return value_to_vst (vst ? vst->ports[index][0] : ranges[index].def, index);
 }
 
 static void processReplacing (AEffect* aeffect, float** inputs, float** outputs, int nframes) {
-    BytesVST* vst = (BytesVST*) aeffect->ptr3;
+    BytesVST* vst = aeffect->ptr3;
     
     if (!vst) {
         return;

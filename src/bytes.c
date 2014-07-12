@@ -99,6 +99,8 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
     float llimits[4];
     float rlimits[4];
     
+    float modulation;
+    
     for (unsigned b = 0; b < 4; ++b) {
         llimits[b] = self->lmod[b] - self->lsync[b];
         rlimits[b] = self->rmod[b] - self->rsync[b];
@@ -108,16 +110,16 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
         v = &self->voices[vi];
         
         bytes_eg_setup (&v->eg1, self->rate,
-            *(self->ports.eg1_attack),
-            *(self->ports.eg1_decay),
-            *(self->ports.eg1_sustain),
-            *(self->ports.eg1_release));
+            *self->ports.eg1_attack,
+            *self->ports.eg1_decay,
+            *self->ports.eg1_sustain,
+            *self->ports.eg1_release);
         
         bytes_eg_setup (&v->eg2, self->rate,
-            *(self->ports.eg2_attack),
-            *(self->ports.eg2_decay),
-            *(self->ports.eg2_sustain),
-            *(self->ports.eg2_release));
+            *self->ports.eg2_attack,
+            *self->ports.eg2_decay,
+            *self->ports.eg2_sustain,
+            *self->ports.eg2_release);
         
         if (v->eg1.alive || v->eg2.alive) {
             bytes_voice_init (v, self->rate);
@@ -127,14 +129,25 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
                 float l = 0;
                 float r = 0;
                 
+                switch (self->method) {
+                case MOD_MANUAL:
+                    modulation = *self->ports.modulation;
+                    break;
+                
+                default:
+                case MOD_ENVELOPE:
+                    modulation = v->eg2.value;
+                    break;
+                }
+                
                 bytes_eg_next (&v->eg1);
                 bytes_eg_next (&v->eg2);
                 
                 for (unsigned o = 0; o < OVERSAMPLING; ++o) {
                     bytes_voice_next (v, v->hz);
                     for (unsigned b = 0; b < 4; ++b) {
-                        l += !!(self->bytes[b] & (1 << ((uint32_t) (v->phase * (self->lsync[b] + (v->eg2.value * llimits[b]))) >> 29))) * self->gain[b];
-                        r += !!(self->bytes[b] & (1 << ((uint32_t) (v->phase * (self->rsync[b] + (v->eg2.value * rlimits[b]))) >> 29))) * self->gain[b];
+                        l += !!(self->bytes[b] & (1 << ((uint32_t) (v->phase * (self->lsync[b] + (modulation * llimits[b]))) >> 29))) * self->gain[b];
+                        r += !!(self->bytes[b] & (1 << ((uint32_t) (v->phase * (self->rsync[b] + (modulation * rlimits[b]))) >> 29))) * self->gain[b];
                     }
                 }
                 
