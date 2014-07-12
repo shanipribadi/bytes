@@ -31,9 +31,9 @@ typedef struct Bytes_ Bytes;
 typedef enum {
     MOD_MANUAL,
     MOD_ENVELOPE,
+    MOD_LFO,
     
     /* TODO: */
-    MOD_LFO,
     MOD_LFO_BY_ENVELOPE
 } Bytes_ModulationMethod;
 
@@ -145,6 +145,7 @@ struct Bytes_ {
     float gain[4];
     
     Bytes_ModulationMethod method;
+    Bytes_DCO lfo;
     
     Bytes_Voice voices[NVOICES];
     double rate;

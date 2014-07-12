@@ -25,14 +25,13 @@
 
 #include <stdint.h>
 
+#include "dco.h"
 #include "eg.h"
 
 typedef struct Bytes__Voice Bytes_Voice;
 
 struct Bytes__Voice {
-    uint32_t phase;
-    
-    double rate;
+    Bytes_DCO dco;
     
     uint8_t key;
     uint8_t velocity;
@@ -51,7 +50,12 @@ struct Bytes__Voice {
     float dc_rout;
 };
 
-void bytes_voice_init (Bytes_Voice* self, double rate);
-void bytes_voice_next (Bytes_Voice* self, double hz);
+static inline void bytes_voice_init (Bytes_Voice* self, double rate) {
+    bytes_dco_init (&self->dco, rate);
+}
+
+static inline void bytes_voice_next (Bytes_Voice* self, double hz) {
+    bytes_dco_next (&self->dco, hz);
+}
 
 #endif

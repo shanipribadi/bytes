@@ -23,6 +23,9 @@
 #include <stdlib.h>
 
 #include "bytes.h"
+#include "dco.h"
+
+static float sine[4096] = { -1 };
 
 Bytes* bytes_new (double rate) {
     Bytes* self = calloc (1, sizeof (Bytes));
@@ -31,6 +34,20 @@ Bytes* bytes_new (double rate) {
         bytes_voice_init (&self->voices[i], rate);
         bytes_eg_init (&self->voices[i].eg1);
         bytes_eg_init (&self->voices[i].eg2);
+    }
+    
+    bytes_dco_init (&self->lfo, rate);
+    
+    if (sine[0] == -1) {
+        float fcos = 1.0;
+        float fsin = 0.0;
+        float delta = (float) (2 * M_PI / 4096.0);
+        
+        for (unsigned i = 0; i < 4096; ++i) {
+            sine[i] = fsin;
+            fsin += delta * fcos;
+            fcos -= delta * fsin;
+        }
     }
     
     self->rate = rate;
@@ -121,51 +138,61 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
             *self->ports.eg2_sustain,
             *self->ports.eg2_release);
         
-        if (v->eg1.alive || v->eg2.alive) {
-            bytes_voice_init (v, self->rate);
+        bytes_voice_init (v, self->rate);
+            
+        for (uint32_t i = start; i < end; ++i) {
+            float l = 0;
+            float r = 0;
+            
+            if (vi == 0) {
+                bytes_dco_next (&self->lfo, 0.5);
+            }
             ++v->counter;
             
-            for (uint32_t i = start; i < end; ++i) {
-                float l = 0;
-                float r = 0;
-                
-                bytes_eg_next (&v->eg1);
-                bytes_eg_next (&v->eg2);
-                
-                switch (self->method) {
-                case MOD_MANUAL:
-                    modulation = *self->ports.modulation;
-                    break;
-                
-                default:
-                case MOD_ENVELOPE:
-                    modulation = v->eg2.value;
-                    break;
-                }
-                
-                for (unsigned o = 0; o < OVERSAMPLING; ++o) {
-                    bytes_voice_next (v, v->hz);
-                    for (unsigned b = 0; b < 4; ++b) {
-                        l += !!(self->bytes[b] & (1 << ((uint32_t) (v->phase * (self->lsync[b] + (modulation * llimits[b]))) >> 29))) * self->gain[b];
-                        r += !!(self->bytes[b] & (1 << ((uint32_t) (v->phase * (self->rsync[b] + (modulation * rlimits[b]))) >> 29))) * self->gain[b];
-                    }
-                }
-                
-                l *= v->eg1.value;
-                r *= v->eg1.value;
-                
-                l /= (float) ((NVOICES >> 1) * OVERSAMPLING);
-                r /= (float) ((NVOICES >> 1) * OVERSAMPLING);
-                
-                v->dc_lout = 0.995f * v->dc_lout + l - v->dc_lin;
-                v->dc_rout = 0.995f * v->dc_rout + r - v->dc_rin;
-                
-                v->dc_lin = l;
-                v->dc_rin = r;
-                
-                self->ports.lout[i] += v->dc_lout;
-                self->ports.rout[i] += v->dc_rout;
+            bytes_eg_next (&v->eg1);
+            bytes_eg_next (&v->eg2);
+            
+            switch (self->method) {
+            default:
+            case MOD_MANUAL:
+                modulation = *self->ports.modulation;
+                break;
+            
+            case MOD_ENVELOPE:
+                modulation = v->eg2.value;
+                break;
+            
+            case MOD_LFO:
+                modulation = (sine[self->lfo.phase >> 20] * 0.5) + 0.5;
+                break;
             }
+            
+            if (!v->eg1.alive && !v->eg2.alive) {
+                continue;
+            }
+            
+            for (unsigned o = 0; o < OVERSAMPLING; ++o) {
+                bytes_voice_next (v, v->hz);
+                for (unsigned b = 0; b < 4; ++b) {
+                    l += !!(self->bytes[b] & (1 << ((uint32_t) (v->dco.phase * (self->lsync[b] + (modulation * llimits[b]))) >> 29))) * self->gain[b];
+                    r += !!(self->bytes[b] & (1 << ((uint32_t) (v->dco.phase * (self->rsync[b] + (modulation * rlimits[b]))) >> 29))) * self->gain[b];
+                }
+            }
+            
+            l *= v->eg1.value;
+            r *= v->eg1.value;
+            
+            l /= (float) ((NVOICES >> 1) * OVERSAMPLING);
+            r /= (float) ((NVOICES >> 1) * OVERSAMPLING);
+            
+            v->dc_lout = 0.995f * v->dc_lout + l - v->dc_lin;
+            v->dc_rout = 0.995f * v->dc_rout + r - v->dc_rin;
+            
+            v->dc_lin = l;
+            v->dc_rin = r;
+            
+            self->ports.lout[i] += v->dc_lout;
+            self->ports.rout[i] += v->dc_rout;
         }
     }
 }

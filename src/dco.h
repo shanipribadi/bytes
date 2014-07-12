@@ -1,6 +1,6 @@
 
 /*
- * voice.c
+ * dco.h
  * 
  * Copyright (c) 2014 Hannu Haahti <grejppi@gmail.com>
  * 
@@ -20,14 +20,24 @@
  * along with Bytes.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "base.h"
-#include "voice.h"
-#include "eg.h"
+#ifndef BYTES__DCO_H
+#define BYTES__DCO_H
 
-void bytes_voice_init (Bytes_Voice* self, double rate) {
+#include <stdint.h>
+
+typedef struct Bytes__DCO Bytes_DCO;
+
+struct Bytes__DCO {
+    uint32_t phase;
+    double rate;
+};
+
+static inline void bytes_dco_init (Bytes_DCO* self, double rate) {
     self->rate = rate;
 }
 
-void bytes_voice_next (Bytes_Voice* self, double hz) {
+static inline void bytes_dco_next (Bytes_DCO* self, double hz) {
     self->phase += lrint (MAX_PHASE / (self->rate / hz));
 }
+
+#endif
