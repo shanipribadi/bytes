@@ -129,6 +129,9 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
                 float l = 0;
                 float r = 0;
                 
+                bytes_eg_next (&v->eg1);
+                bytes_eg_next (&v->eg2);
+                
                 switch (self->method) {
                 case MOD_MANUAL:
                     modulation = *self->ports.modulation;
@@ -139,9 +142,6 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
                     modulation = v->eg2.value;
                     break;
                 }
-                
-                bytes_eg_next (&v->eg1);
-                bytes_eg_next (&v->eg2);
                 
                 for (unsigned o = 0; o < OVERSAMPLING; ++o) {
                     bytes_voice_next (v, v->hz);
