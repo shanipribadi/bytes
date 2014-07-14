@@ -147,6 +147,8 @@ struct Bytes_ {
     Bytes_ModulationMethod method;
     Bytes_DCO lfo;
     
+    unsigned voice_index;
+    
     Bytes_Voice voices[NVOICES];
     double rate;
 };

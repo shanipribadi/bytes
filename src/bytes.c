@@ -25,6 +25,8 @@
 #include "bytes.h"
 #include "dco.h"
 
+static int OVERSAMPLING = 4;
+
 static float sine[4096] = { -1 };
 
 Bytes* bytes_new (double rate) {
@@ -35,6 +37,15 @@ Bytes* bytes_new (double rate) {
         bytes_eg_init (&self->voices[i].eg1);
         bytes_eg_init (&self->voices[i].eg2);
     }
+    
+    int os = (rate / 2) / 1000;
+    
+    while ((os % 10) == 0) {
+        os /= 10;
+    }
+    
+    OVERSAMPLING = os;
+    printf ("Using %dx oversampling\n", os);
     
     bytes_dco_init (&self->lfo, rate);
     
@@ -56,30 +67,7 @@ Bytes* bytes_new (double rate) {
 }
 
 Bytes_Voice* bytes_find_voice (Bytes* self) {
-    Bytes_Voice* v = NULL;
-    unsigned q = NVOICES;
-    uint32_t longest = 0;
-    static unsigned force = 0;
-    
-    for (unsigned i = 0; i < NVOICES; ++i) {
-        if (self->voices[i].key == INVALID_KEY || !self->voices[i].eg1.alive) {
-            q = i;
-            break;
-        }
-        
-        if (self->voices[i].counter > longest) {
-            longest = self->voices[i].counter;
-            q = i;
-        }
-    }
-    
-    if (q < NVOICES) {
-        v = &self->voices[q];
-    } else {
-        v = &self->voices[++force % NVOICES];
-    }
-    
-    return v;
+    return &self->voices[(++self->voice_index) % NVOICES];
 }
 
 void bytes_note_on (Bytes* self, uint8_t key, uint8_t velocity) {
@@ -167,23 +155,21 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
                 break;
             }
             
-            if (!v->eg1.alive && !v->eg2.alive) {
-                continue;
-            }
-            
-            for (unsigned o = 0; o < OVERSAMPLING; ++o) {
-                bytes_voice_next (v, v->hz);
-                for (unsigned b = 0; b < 4; ++b) {
-                    l += !!(self->bytes[b] & (1 << ((uint32_t) (v->dco.phase * (self->lsync[b] + (modulation * llimits[b]))) >> 29))) * self->gain[b];
-                    r += !!(self->bytes[b] & (1 << ((uint32_t) (v->dco.phase * (self->rsync[b] + (modulation * rlimits[b]))) >> 29))) * self->gain[b];
+            if (v->eg1.alive || v->eg2.alive) {
+                for (unsigned o = 0; o < OVERSAMPLING; ++o) {
+                    bytes_voice_next (v, v->hz);
+                    for (unsigned b = 0; b < 4; ++b) {
+                        l += !!(self->bytes[b] & (1 << ((uint32_t) (v->dco.phase * (self->lsync[b] + (modulation * llimits[b]))) >> 29))) * self->gain[b];
+                        r += !!(self->bytes[b] & (1 << ((uint32_t) (v->dco.phase * (self->rsync[b] + (modulation * rlimits[b]))) >> 29))) * self->gain[b];
+                    }
                 }
+                
+                l *= v->eg1.value;
+                r *= v->eg1.value;
+                
+                l /= (float) ((NVOICES >> 1) * OVERSAMPLING);
+                r /= (float) ((NVOICES >> 1) * OVERSAMPLING);
             }
-            
-            l *= v->eg1.value;
-            r *= v->eg1.value;
-            
-            l /= (float) ((NVOICES >> 1) * OVERSAMPLING);
-            r /= (float) ((NVOICES >> 1) * OVERSAMPLING);
             
             v->dc_lout = 0.995f * v->dc_lout + l - v->dc_lin;
             v->dc_rout = 0.995f * v->dc_rout + r - v->dc_rin;
