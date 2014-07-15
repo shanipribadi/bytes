@@ -23,7 +23,6 @@
 
 #include <stdlib.h>
 #include <math.h>
-#include <stdio.h>
 
 #include "eg.h"
 
@@ -42,23 +41,18 @@ void bytes_eg_init (Bytes_EG* self) {
 }
 
 void bytes_eg_setup (Bytes_EG* self, float rate, float attack, float decay, float sustain, float release) {
-    static unsigned long c = 0;
-    
     self->rate = rate;
     self->sustain = sustain;
     
     if (self->attack != attack) {
-        printf ("update attack %lu\n", c++);
         self->a_coeff = 1.0f - exp (-1.0f / (attack * rate));
         self->attack = attack;
     }
     if (self->decay != decay) {
-        printf ("update decay %lu\n", c++);
         self->d_coeff = 1.0f - exp (-1.0f / (decay * rate));
         self->decay = decay;
     }
     if (self->release != release) {
-        printf ("update release %lu\n", c++);
         self->r_coeff = 1.0f - exp (-1.0f / (release * rate));
         self->release = release;
     }
