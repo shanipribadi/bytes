@@ -52,6 +52,10 @@ Bytes* bytes_new (double rate) {
         os /= 10;
     }
     
+    if (os > (rate / 1000)) {
+        os = rate / 1000;
+    }
+    
     OVERSAMPLING = os;
     printf ("Using %dx oversampling\n", os);
     
@@ -76,7 +80,7 @@ Bytes* bytes_new (double rate) {
 
 Bytes_Voice* bytes_find_voice (Bytes* self) {
     Bytes_Voice* v;
-    Bytes_Voice* alt;
+    Bytes_Voice* alt = NULL;
     
     int tries = NVOICES;
     int found = 0;
@@ -85,7 +89,7 @@ Bytes_Voice* bytes_find_voice (Bytes* self) {
     while (tries--) {
         v = &self->voices[(++self->voice_index) % NVOICES];
         
-        if (v->counter > longest) {
+        if (v->counter >= longest) {
             alt = v;
             longest = v->counter;
         }
