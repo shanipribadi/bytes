@@ -38,7 +38,15 @@ Bytes* bytes_new (double rate) {
         bytes_eg_init (&self->voices[i].eg2);
     }
     
-    int os = (rate / 2) / 1000;
+    int os = rate;
+    
+    while ((os % 1000) != 0) {
+        if ((os % 3) == 0) {
+            os /= 3;
+        } else {
+            break;
+        }
+    }
     
     while ((os % 10) == 0) {
         os /= 10;
