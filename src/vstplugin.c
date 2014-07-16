@@ -309,12 +309,3 @@ LV2_SYMBOL_EXPORT const AEffect* VSTPluginMain (audioMasterCallback master) {
     
     return self;
 }
-
-#ifdef WTF_BITWIG
-
-/* seriously: why? */
-LV2_SYMBOL_EXPORT const AEffect* main (audioMasterCallback master) {
-    return VSTPluginMain (master);
-}
-
-#endif

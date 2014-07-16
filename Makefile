@@ -15,10 +15,6 @@ vst:
 	mkdir -p build/
 	$(cc) -Werror $(flags) $(vstsources) -o build/bytes-vst.so
 
-bitwigvst:
-	mkdir -p build/
-	gcc -DWTF_BITWIG $(flags) $(vstsources) -o build/bytes-vst.so
-
 install:
 	cp -rf build/bytes.lv2 ~/.lv2
 	cp -rf build/bytes-vst.so ~/.vst
