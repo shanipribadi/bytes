@@ -75,7 +75,28 @@ Bytes* bytes_new (double rate) {
 }
 
 Bytes_Voice* bytes_find_voice (Bytes* self) {
-    return &self->voices[(++self->voice_index) % NVOICES];
+    Bytes_Voice* v;
+    Bytes_Voice* alt;
+    
+    int tries = NVOICES;
+    int found = 0;
+    uint32_t longest = 0;
+    
+    while (tries--) {
+        v = &self->voices[(++self->voice_index) % NVOICES];
+        
+        if (v->counter > longest) {
+            alt = v;
+            longest = v->counter;
+        }
+        
+        if (v->key == INVALID_KEY) {
+            found = 1;
+            break;
+        }
+    }
+    
+    return found ? v : alt;
 }
 
 void bytes_note_on (Bytes* self, uint8_t key, uint8_t velocity) {
@@ -143,7 +164,6 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
             if (vi == 0) {
                 bytes_dco_next (&self->lfo, 0.5);
             }
-            ++v->counter;
             
             bytes_eg_next (&v->eg1);
             bytes_eg_next (&v->eg2);
@@ -163,7 +183,7 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
                 break;
             }
             
-            if (v->eg1.alive || v->eg2.alive) {
+            if (v->eg1.alive) {
                 for (unsigned o = 0; o < OVERSAMPLING; ++o) {
                     bytes_voice_next (v, v->hz);
                     for (unsigned b = 0; b < 4; ++b) {
@@ -177,6 +197,8 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
                 
                 l /= (float) ((NVOICES >> 1) * OVERSAMPLING);
                 r /= (float) ((NVOICES >> 1) * OVERSAMPLING);
+            } else {
+                ++v->counter;
             }
             
             v->dc_lout = 0.995f * v->dc_lout + l - v->dc_lin;
