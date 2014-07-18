@@ -199,7 +199,7 @@ static intptr_t dispatcher (AEffect* aeffect, int opcode, int index, intptr_t in
             break;
         }
         
-        ((Bytes*) vst->handle)->rate = (double) flt;
+        bytes_set_rate ((Bytes*) vst->handle, flt);
         break;
     
     case effGetEffectName:

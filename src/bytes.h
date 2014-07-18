@@ -151,9 +151,12 @@ struct Bytes_ {
     
     Bytes_Voice voices[NVOICES];
     double rate;
+    
+    int oversampling;
 };
 
 Bytes* bytes_new (double rate);
+void bytes_set_rate (Bytes* self, double rate);
 void bytes_note_on (Bytes* self, uint8_t key, uint8_t velocity);
 void bytes_note_off (Bytes* self, uint8_t key, uint8_t velocity);
 void bytes_render (Bytes* self, uint32_t start, uint32_t end);
