@@ -46,7 +46,7 @@ Bytes* bytes_new (double rate) {
         float delta = (float) (2 * M_PI / 4096.0);
         
         for (unsigned i = 0; i < 4096; ++i) {
-            sine[i] = fsin;
+            sine[i] = (fsin * 0.5) + 0.5;
             fsin += delta * fcos;
             fcos -= delta * fsin;
         }
@@ -184,7 +184,7 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
                 break;
             
             case MOD_LFO:
-                modulation = (sine[self->lfo.phase >> 20] * 0.5) + 0.5;
+                modulation = sine[self->lfo.phase >> 20];
                 break;
             }
             
