@@ -56,27 +56,8 @@ Bytes* bytes_new (double rate) {
 }
 
 void bytes_set_rate (Bytes* self, double rate) {
-    int os = rate;
-    
-    while ((os % 1000) != 0) {
-        if ((os % 3) == 0) {
-            os /= 3;
-        } else {
-            break;
-        }
-    }
-    
-    while ((os % 10) == 0) {
-        os /= 10;
-    }
-    
-    if (os > (rate / 1000)) {
-        os = rate / 1000;
-    }
-    
-    self->oversampling = os;
+    self->oversampling = 32;
     self->rate = rate;
-    printf ("Using %dx oversampling\n", os);
 }
 
 static Bytes_Voice* bytes_find_voice (Bytes* self) {
@@ -138,6 +119,9 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
     float llimits[4];
     float rlimits[4];
     
+    uint32_t lmultiply[4];
+    uint32_t rmultiply[4];
+    
     float modulation;
     
     for (unsigned b = 0; b < 4; ++b) {
@@ -188,12 +172,17 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
                 break;
             }
             
+            for (unsigned b = 0; b < 4; ++b) {
+                lmultiply[b] = self->lsync[b] + (modulation * llimits[b]);
+                rmultiply[b] = self->rsync[b] + (modulation * rlimits[b]);
+            }
+            
             if (v->eg1.alive) {
                 for (unsigned o = 0; o < self->oversampling; ++o) {
                     bytes_voice_next (v, v->hz);
                     for (unsigned b = 0; b < 4; ++b) {
-                        l += !!(self->bytes[b] & (1 << ((uint32_t) (v->dco.phase * (self->lsync[b] + (modulation * llimits[b]))) >> 29))) * self->gain[b];
-                        r += !!(self->bytes[b] & (1 << ((uint32_t) (v->dco.phase * (self->rsync[b] + (modulation * rlimits[b]))) >> 29))) * self->gain[b];
+                        l += !!(self->bytes[b] & (1 << ((uint32_t) (v->dco.phase * lmultiply[b]) >> 29))) * self->gain[b];
+                        r += !!(self->bytes[b] & (1 << ((uint32_t) (v->dco.phase * rmultiply[b]) >> 29))) * self->gain[b];
                     }
                 }
                 
