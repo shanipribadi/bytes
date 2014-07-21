@@ -145,7 +145,7 @@ struct Bytes_ {
     float gain[4];
     
     Bytes_ModulationMethod method;
-    Bytes_DCO lfo;
+    DCO lfo;
     
     unsigned voice_index;
     

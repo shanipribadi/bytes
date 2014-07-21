@@ -31,7 +31,7 @@
 typedef struct Bytes__Voice Bytes_Voice;
 
 struct Bytes__Voice {
-    Bytes_DCO dco;
+    DCO dco;
     
     uint8_t key;
     uint8_t velocity;
@@ -39,8 +39,8 @@ struct Bytes__Voice {
     double hz;
     float gain;
     
-    Bytes_EG eg1;
-    Bytes_EG eg2;
+    EG eg1;
+    EG eg2;
     
     uint32_t counter;
     
@@ -51,11 +51,11 @@ struct Bytes__Voice {
 };
 
 static inline void bytes_voice_init (Bytes_Voice* self, double rate) {
-    bytes_dco_init (&self->dco, rate);
+    dco_init (&self->dco, rate);
 }
 
 static inline void bytes_voice_next (Bytes_Voice* self, double hz) {
-    bytes_dco_next (&self->dco, hz);
+    dco_next (&self->dco, hz);
 }
 
 #endif

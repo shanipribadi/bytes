@@ -2,7 +2,8 @@
 /*
  * eg.h
  * 
- * Copyright (c) 2014 Hannu Haahti <grejppi@gmail.com>
+ * Based on an example by mystran <http://is.gd/etoZHj>,
+ * Bytes: Copyright (c) 2014 Hannu Haahti <grejppi@gmail.com>
  * 
  * This file is part of Bytes.
  *
@@ -20,12 +21,12 @@
  * along with Bytes.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BYTES__EG_H
-#define BYTES__EG_H
+#ifndef EG_H
+#define EG_H
 
-typedef struct Bytes__EG Bytes_EG;
+typedef struct EG_ EG;
 
-struct Bytes__EG {
+struct EG_ {
     float rate;
     float value;
     float attack;
@@ -40,11 +41,11 @@ struct Bytes__EG {
     int rising;
 };
 
-void bytes_eg_init (Bytes_EG* self);
-void bytes_eg_setup (Bytes_EG*, float rate, float attack, float decay, float sustain, float release);
-void bytes_eg_on (Bytes_EG* self);
-void bytes_eg_off (Bytes_EG* self);
-float bytes_eg_value (Bytes_EG* self);
-float bytes_eg_next (Bytes_EG* self);
+void eg_init (EG* self);
+void eg_setup (EG*, float rate, float attack, float decay, float sustain, float release);
+void eg_on (EG* self);
+void eg_off (EG* self);
+float eg_value (EG* self);
+float eg_next (EG* self);
 
 #endif

@@ -20,23 +20,23 @@
  * along with Bytes.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BYTES__DCO_H
-#define BYTES__DCO_H
+#ifndef DCO_H
+#define DCO_H
 
 #include <stdint.h>
 
-typedef struct Bytes__DCO Bytes_DCO;
+typedef struct DCO_ DCO;
 
-struct Bytes__DCO {
+struct DCO_ {
     uint32_t phase;
     double rate;
 };
 
-static inline void bytes_dco_init (Bytes_DCO* self, double rate) {
+static inline void dco_init (DCO* self, double rate) {
     self->rate = rate;
 }
 
-static inline void bytes_dco_next (Bytes_DCO* self, double hz) {
+static inline void dco_next (DCO* self, double hz) {
     self->phase += lrint (MAX_PHASE / (self->rate / hz));
 }
 

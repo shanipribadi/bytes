@@ -2,8 +2,8 @@
 /*
  * eg.c
  * 
- * Copyright (c) 2014 Hannu Haahti <grejppi@gmail.com>
- * Based on an example by mystran: <http://is.gd/etoZHj>
+ * Based on an example by mystran <http://is.gd/etoZHj>,
+ * Bytes: Copyright (c) 2014 Hannu Haahti <grejppi@gmail.com>
  * 
  * This file is part of Bytes.
  *
@@ -26,7 +26,7 @@
 
 #include "eg.h"
 
-void bytes_eg_init (Bytes_EG* self) {
+void eg_init (EG* self) {
     self->value = 0.0f;
     self->a_coeff = 0.0f;
     self->d_coeff = 0.0f;
@@ -40,7 +40,7 @@ void bytes_eg_init (Bytes_EG* self) {
     self->rising = 0;
 }
 
-void bytes_eg_setup (Bytes_EG* self, float rate, float attack, float decay, float sustain, float release) {
+void eg_setup (EG* self, float rate, float attack, float decay, float sustain, float release) {
     self->rate = rate;
     self->sustain = sustain;
     
@@ -58,21 +58,21 @@ void bytes_eg_setup (Bytes_EG* self, float rate, float attack, float decay, floa
     }
 }
 
-void bytes_eg_on (Bytes_EG* self) {
+void eg_on (EG* self) {
     self->gate = 1;
     self->alive = 1;
     self->rising = 1;
 }
 
-void bytes_eg_off (Bytes_EG* self) {
+void eg_off (EG* self) {
     self->gate = 0;
 }
 
-inline float bytes_eg_value (Bytes_EG* self) {
+inline float eg_value (EG* self) {
     return self->value;
 }
 
-float bytes_eg_next (Bytes_EG* self) {
+float eg_next (EG* self) {
     if (self->gate) {
         if (self->rising) {
             self->value += self->a_coeff * ((1 / 0.63f) - self->value);
@@ -91,5 +91,5 @@ float bytes_eg_next (Bytes_EG* self) {
         }
     }
     
-    return bytes_eg_value (self);
+    return eg_value (self);
 }

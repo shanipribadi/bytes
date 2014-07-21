@@ -32,13 +32,13 @@ Bytes* bytes_new (double rate) {
     
     for (unsigned i = 0; i < NVOICES; ++i) {
         bytes_voice_init (&self->voices[i], rate);
-        bytes_eg_init (&self->voices[i].eg1);
-        bytes_eg_init (&self->voices[i].eg2);
+        eg_init (&self->voices[i].eg1);
+        eg_init (&self->voices[i].eg2);
     }
     
     bytes_set_rate (self, rate);
     
-    bytes_dco_init (&self->lfo, rate);
+    dco_init (&self->lfo, rate);
     
     if (sine[0] == -1) {
         float fcos = 1.0;
@@ -95,8 +95,8 @@ void bytes_note_on (Bytes* self, uint8_t key, uint8_t velocity) {
     v->hz = key2hz (v->key) / (double) self->oversampling;
     v->gain = velocity / 255.0f;
     
-    bytes_eg_on (&v->eg1);
-    bytes_eg_on (&v->eg2);
+    eg_on (&v->eg1);
+    eg_on (&v->eg2);
 }
 
 void bytes_note_off (Bytes* self, uint8_t key, uint8_t velocity) {
@@ -106,8 +106,8 @@ void bytes_note_off (Bytes* self, uint8_t key, uint8_t velocity) {
         v = &self->voices[i];
         
         if (v->key == key) {
-            bytes_eg_off (&v->eg1);
-            bytes_eg_off (&v->eg2);
+            eg_off (&v->eg1);
+            eg_off (&v->eg2);
             v->velocity = 0;
         }
     }
@@ -119,8 +119,8 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
     float llimits[4];
     float rlimits[4];
     
-    uint32_t lmultiply[4];
-    uint32_t rmultiply[4];
+    float lmultiply[4];
+    float rmultiply[4];
     
     float modulation;
     
@@ -132,13 +132,13 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
     for (unsigned vi = 0; vi < NVOICES; ++vi) {
         v = &self->voices[vi];
         
-        bytes_eg_setup (&v->eg1, self->rate,
+        eg_setup (&v->eg1, self->rate,
             *self->ports.eg1_attack,
             *self->ports.eg1_decay,
             *self->ports.eg1_sustain,
             *self->ports.eg1_release);
         
-        bytes_eg_setup (&v->eg2, self->rate,
+        eg_setup (&v->eg2, self->rate,
             *self->ports.eg2_attack,
             *self->ports.eg2_decay,
             *self->ports.eg2_sustain,
@@ -151,11 +151,11 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
             float r = 0;
             
             if (vi == 0) {
-                bytes_dco_next (&self->lfo, 0.5);
+                dco_next (&self->lfo, 0.5);
             }
             
-            bytes_eg_next (&v->eg1);
-            bytes_eg_next (&v->eg2);
+            eg_next (&v->eg1);
+            eg_next (&v->eg2);
             
             switch (self->method) {
             default:
