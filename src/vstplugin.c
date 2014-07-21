@@ -87,6 +87,7 @@ static const BytesVST_Port ranges[NUM_PORTS - PARAMOFFSET] = {
     
     { "method", 0, 1, 1 },
     { "modulat", 0, 1, 0 },
+    { "rounded", 0, 0, 0 },
 };
 
 static inline float value_to_lv2 (float vstvalue, uint32_t index) {

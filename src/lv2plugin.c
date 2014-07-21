@@ -89,6 +89,7 @@ static void connect_port (LV2_Handle instance, uint32_t port, void* data) {
         BYTES_CONNECT (EG2_RELEASE, eg2_release);
         BYTES_CONNECT (MOD_METHOD, mod_method);
         BYTES_CONNECT (MODULATION, modulation);
+        BYTES_CONNECT (ROUNDED, rounded);
         default: break;
     }
 }

@@ -84,6 +84,7 @@ typedef enum {
     
     MOD_METHOD,
     MODULATION,
+    ROUNDED,
     
     NUM_PORTS
 } Bytes_PortIndex;
@@ -127,6 +128,7 @@ struct Bytes_ {
         const float* eg2_release;
         const float* mod_method;
         const float* modulation;
+        const float* rounded;
     } ports;
     
     LV2_URID_Map* map;

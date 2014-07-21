@@ -175,6 +175,11 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
             for (unsigned b = 0; b < 4; ++b) {
                 lmultiply[b] = self->lsync[b] + (modulation * llimits[b]);
                 rmultiply[b] = self->rsync[b] + (modulation * rlimits[b]);
+                
+                if ((int) *self->ports.rounded) {
+                    lmultiply[b] = floor (lmultiply[b]);
+                    rmultiply[b] = floor (rmultiply[b]);
+                }
             }
             
             if (v->eg1.alive) {

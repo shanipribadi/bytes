@@ -378,4 +378,13 @@
     lv2:minimum 0.0;
     lv2:maximum 1.0;
     lv2:default 0.0;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 37;
+    lv2:symbol "rounded";
+    lv2:name "Rounded";
+    lv2:minimum 0.0;
+    lv2:maximum 1.0;
+    lv2:default 0.0;
+    lv2:portProperty lv2:toggled;
   ].
