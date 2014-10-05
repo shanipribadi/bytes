@@ -93,7 +93,7 @@ void bytes_note_on (Bytes* self, uint8_t key, uint8_t velocity) {
     v->key = key;
     v->velocity = velocity;
     v->hz = key2hz (v->key) / (double) self->oversampling;
-    v->gain = velocity / 255.0f;
+    v->gain = velocity / 127.0f;
     
     eg_on (&v->eg1);
     eg_on (&v->eg2);
@@ -186,8 +186,8 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
                 for (unsigned o = 0; o < self->oversampling; ++o) {
                     bytes_voice_next (v, v->hz);
                     for (unsigned b = 0; b < 4; ++b) {
-                        l += !!(self->bytes[b] & (1 << ((uint32_t) (v->dco.phase * lmultiply[b]) >> 29))) * self->gain[b];
-                        r += !!(self->bytes[b] & (1 << ((uint32_t) (v->dco.phase * rmultiply[b]) >> 29))) * self->gain[b];
+                        l += !!(self->bytes[b] & (1 << ((uint32_t) (v->dco.phase * lmultiply[b]) >> 29))) * self->gain[b] * v->gain;
+                        r += !!(self->bytes[b] & (1 << ((uint32_t) (v->dco.phase * rmultiply[b]) >> 29))) * self->gain[b] * v->gain;
                     }
                 }
                 
