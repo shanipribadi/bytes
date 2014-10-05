@@ -160,21 +160,21 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
             switch (self->method) {
             default:
             case MOD_MANUAL:
-                modulation = *self->ports.modulation;
+                modulation = *self->ports.modulation * self->mod_range;
                 break;
             
             case MOD_ENVELOPE:
-                modulation = v->eg2.value;
+                modulation = v->eg2.value * self->mod_range;
                 break;
             
             case MOD_LFO:
-                modulation = sine[self->lfo.phase >> 20];
+                modulation = sine[self->lfo.phase >> 20] * self->mod_range;
                 break;
             }
             
             for (unsigned b = 0; b < 4; ++b) {
-                lmultiply[b] = self->lsync[b] + (modulation * llimits[b]);
-                rmultiply[b] = self->rsync[b] + (modulation * rlimits[b]);
+                lmultiply[b] = self->lsync[b] + ((self->mod_min + modulation) * llimits[b]);
+                rmultiply[b] = self->rsync[b] + ((self->mod_min + modulation) * rlimits[b]);
                 
                 if ((int) *self->ports.rounded) {
                     lmultiply[b] = floor (lmultiply[b]);

@@ -90,6 +90,8 @@ static void connect_port (LV2_Handle instance, uint32_t port, void* data) {
         BYTES_CONNECT (MOD_METHOD, mod_method);
         BYTES_CONNECT (MODULATION, modulation);
         BYTES_CONNECT (ROUNDED, rounded);
+        BYTES_CONNECT (MOD_MIN, mod_min);
+        BYTES_CONNECT (MOD_MAX, mod_max);
         default: break;
     }
 }
@@ -133,6 +135,9 @@ static void run (LV2_Handle instance, uint32_t nframes) {
     self->gain[3] = *self->ports.gain4;
     
     self->method = (Bytes_ModulationMethod) *self->ports.mod_method;
+    
+    self->mod_min = *self->ports.mod_min;
+    self->mod_range = *self->ports.mod_max - self->mod_min;
     
     LV2_ATOM_SEQUENCE_FOREACH (self->ports.control, ev) {
         if (ev->body.type == self->uris.midi_MidiEvent) {
