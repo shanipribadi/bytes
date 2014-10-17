@@ -12,4 +12,3 @@ lv2:
 
 install:
 	cp -rf build/bytes.lv2 ~/.lv2
-	cp -rf build/bytes-vst.so ~/.vst
