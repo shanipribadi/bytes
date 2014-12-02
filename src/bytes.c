@@ -157,20 +157,25 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
             eg_next (&v->eg1);
             eg_next (&v->eg2);
             
+            modulation = *self->ports.modulation;
             switch (self->method) {
             default:
             case MOD_MANUAL:
-                modulation = *self->ports.modulation * self->mod_range;
                 break;
             
             case MOD_ENVELOPE:
-                modulation = v->eg2.value * self->mod_range;
+                modulation += v->eg2.value;
                 break;
             
             case MOD_LFO:
-                modulation = sine[self->lfo.phase >> 20] * self->mod_range;
+                modulation += sine[self->lfo.phase >> 20];
+                break;
+
+            case MOD_LFO_BY_ENVELOPE:
+                modulation += v->eg2.value + sine[self->lfo.phase >> 20];
                 break;
             }
+            modulation *= self->mod_range;
             
             for (unsigned b = 0; b < 4; ++b) {
                 lmultiply[b] = self->lsync[b] + ((self->mod_min + modulation) * llimits[b]);
