@@ -87,6 +87,7 @@ typedef enum {
     ROUNDED,
     MOD_MIN,
     MOD_MAX,
+    LFO_RATE,
     
     NUM_PORTS
 } Bytes_PortIndex;
@@ -133,6 +134,7 @@ struct Bytes_ {
         const float* rounded;
         const float* mod_min;
         const float* mod_max;
+        const float* lfo_rate;
     } ports;
     
     LV2_URID_Map* map;
@@ -155,6 +157,7 @@ struct Bytes_ {
     
     float mod_min;
     float mod_range;
+    double lfo_rate;
     
     unsigned voice_index;
     

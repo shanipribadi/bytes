@@ -151,7 +151,7 @@ void bytes_render (Bytes* self, uint32_t start, uint32_t end) {
             float r = 0;
             
             if (vi == 0) {
-                dco_next (&self->lfo, 0.5);
+                dco_next (&self->lfo, self->lfo_rate);
             }
             
             eg_next (&v->eg1);

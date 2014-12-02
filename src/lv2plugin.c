@@ -92,6 +92,7 @@ static void connect_port (LV2_Handle instance, uint32_t port, void* data) {
         BYTES_CONNECT (ROUNDED, rounded);
         BYTES_CONNECT (MOD_MIN, mod_min);
         BYTES_CONNECT (MOD_MAX, mod_max);
+        BYTES_CONNECT (LFO_RATE, lfo_rate);
         default: break;
     }
 }
@@ -138,6 +139,7 @@ static void run (LV2_Handle instance, uint32_t nframes) {
     
     self->mod_min = *self->ports.mod_min;
     self->mod_range = *self->ports.mod_max - self->mod_min;
+    self->lfo_rate = (double) *self->ports.lfo_rate;
     
     LV2_ATOM_SEQUENCE_FOREACH (self->ports.control, ev) {
         if (ev->body.type == self->uris.midi_MidiEvent) {
